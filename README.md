@@ -1,8 +1,5 @@
 # Form Projekt
 
-## Demo
-You can visit my website here: [form-projekt](https://angelikamallek.github.io/formProjekt/)
-
 ## Description
 
 This is a simple to-do form application created as a student project.
