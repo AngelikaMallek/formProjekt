@@ -1,6 +1,7 @@
 {
   "name": "formprojekt",
   "private": true,
+  "homepage": "https://angelikamallek.github.io/formProjekt/",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
