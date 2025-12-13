@@ -1,0 +1,42 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 400px;
+    margin: 0 auto;
+    padding-bottom: 20px;
+}
+
+.form > div {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form__element {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+}
+
+.form__field {
+    padding: 10px;
+    border: 1px solid #dfdfdf;
+    border-radius: 4px;
+}
+
+.form__button {
+    margin-top: 10px;
+    padding: 12px;
+    background-color: teal;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.errors {
+    font-size: 12px;
+    color: crimson;
+}

@@ -4,9 +4,14 @@
     <meta charset="UTF-8" />
     <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="CSS/container.css">
+    <link rel="stylesheet" href="CSS/form.css">
+    <link rel="stylesheet" href="CSS/style.css">
+    <link rel="stylesheet" href="CSS/section.css">
+    <script type="module" src="/src/main.js"></script>
     <title>Form App</title>
   </head>
-  <body>
+  <body class="body">
      <div class="container">
         <header>
             <h1 class="container__heading">Formularz kontaktowy</h1>
@@ -15,44 +20,43 @@
             <h2 class="section__heading">Podaj swoje dane</h2>
             <form class="form">
               <div>
-                <label>
+                <label class="form__element">
                   Name:
                   <input class="form__field" type="text" placeholder="Name">
                 </label>
                 <div class="errors" data-input="name"></div>
               </div>
               <div>
-                <label>
+                <label class="form__element">
                   Email:
                   <input class="form__field" type="text" placeholder="Email">
                 </label>
                 <div class="errors" data-input="email"></div>
               </div>
               <div>
-                <label>
+                <label class="form__element">
                   Age:
                   <input class="form__field" type="number" placeholder="Age">
                 </label>
                 <div class="errors" data-input="age"></div>
               </div>
               <div>
-                <label>
+                <label class="form__element">
                   Phone:
                   <input class="form__field" type="text" placeholder="Phone">
                 </label>
                 <div class="errors" data-input="phone"></div>
               </div>
               <div>
-                <label>
+                <label class="form__element">
                   Message:
                   <input class="form__field" type="text" placeholder="Message">
                 </label>
                 <div class="errors" data-input="message"></div>
               </div> 
-              <button class="form__button">Wyślij</button>
+              <button class="form__button">Send</button>
             </form>
         </section>
     </div>
-    <script type="module" src="/src/main.js"></script>
   </body>
 </html>

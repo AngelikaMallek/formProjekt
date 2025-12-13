@@ -1,0 +1,16 @@
+.section {
+    background-color: white;
+    margin-bottom: 20px;
+}
+
+.section__heading {
+    border-bottom: 2px solid #dfdfdf;
+    padding: 20px;
+    font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+}
+
+.section__element {
+    font-size: 15px;
+}
