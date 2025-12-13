@@ -46,6 +46,11 @@ form.addEventListener('submit', (e) => {
     valid = false;
   }
 
+  if (!data.get('repeat')) {
+    showError('repeat', 'Please select a repeat');
+    valid = false;
+  }
+
   if (!valid) return;
 
   alert('Task added successfully!');

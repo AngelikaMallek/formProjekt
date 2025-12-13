@@ -67,7 +67,19 @@
                 </label>
                 <div class="errors" data-input="assignedTo"></div>
               </div>
-              <button class="form__button" type="submit">Send</button>
+              <div>
+                <label class="form__element">
+                  Repeat:
+                  <select class="form__field" name="repeat">
+                    <option value="">None</option>
+                    <option value="daily">Daily</option>
+                    <option value="weekly">Weekly</option>
+                    <option value="monthly">Monthly</option>
+                  </select>
+                </label>
+                <div class="errors" data-input="repeat"></div>
+            </div>
+            <button class="form__button" type="submit">Send</button>
             </form>
         </section>
     </div>
