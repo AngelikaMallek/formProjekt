@@ -1,5 +1,9 @@
 const form = document.querySelector('#taskForm');
 
+const showAlert = (msg) => alert(msg);
+const showConfirm = (msg) => confirm(msg);
+const showPrompt = (msg) => prompt(msg);
+
 const showError = (name, message) => {
   const box = document.querySelector(`.errors[data-input="${name}"]`);
   box.textContent = message;
@@ -53,6 +57,11 @@ form.addEventListener('submit', (e) => {
 
   if (!valid) return;
 
-  alert('Task added successfully!');
+  if (!showConfirm('Are you sure you want to add this task?')) return;
+
+  const tag = showPrompt('Add a tag for this task (optional):');
+
+  showAlert('Task added successfully' + (tag ? ` with tag: ${tag}` : ''));
+
   form.reset();
 });
