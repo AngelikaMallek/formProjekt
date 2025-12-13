@@ -7,6 +7,12 @@
     padding-bottom: 20px;
 }
 
+@media(max-width: 767px) {
+    .form {
+        padding: 15px;
+    }
+}
+
 .form > div {
     display: flex;
     flex-direction: column;
