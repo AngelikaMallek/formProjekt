@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form App</title>
+    <script type="module" crossorigin src="/assets/index-BSSKCBXo.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-Arw01cSC.css">
+  </head>
+  <body class="body">
+     <div class="container">
+        <header>
+            <h1 class="container__heading">To do app</h1>
+        </header>
+        <section class="section">
+            <h2 class="section__heading">Give a task to do</h2>
+            <form class="form" id="taskForm">
+              <div>
+                <label class="form__element">
+                  Topic:
+                  <input class="form__field" type="text" placeholder="Topic" name="topic">
+                </label>
+                <div class="errors" data-input="topic"></div>
+              </div>
+              <div>
+                <label class="form__element">
+                  Description:
+                  <input class="form__field" type="message" placeholder="Description" name="description">
+                </label>
+                <div class="errors" data-input="description"></div>
+              </div>
+              <div>
+                <label class="form__element">
+                  Completion date:
+                  <input class="form__field" type="date" placeholder="Completion date" name="date">
+                </label>
+                <div class="errors" data-input="date"></div>
+              </div>
+              <div>
+                <label class="form__element">
+                  Priority
+                  <select class="form__field" name="priority">
+                      <option value="" disabled selected></option>
+                      <option value="High">High</option>
+                      <option value="Medium">Medium</option>
+                      <option value="Low">Low</option>
+                      <option value="Optional">Optional</option>
+                  </select>
+                </label>
+                <div class="errors" data-input="priority"></div>
+              </div>
+              <div>
+                <label class="form__element">Status:</label>
+                <label><input type="radio" name="status" value="Not started"> Not started</label>
+                <label><input type="radio" name="status" value="In progress"> In progress</label>
+                <label><input type="radio" name="status" value="Done"> Done</label>
+                <div class="errors" data-input="status"></div>
+              </div>
+              <div>
+                <label class="form__element">
+                  Assigned to:
+                  <input class="form__field" type="text" name="assignedTo" placeholder="Person responsible">
+                </label>
+                <div class="errors" data-input="assignedTo"></div>
+              </div>
+              <div>
+                <label class="form__element">
+                  Repeat:
+                  <select class="form__field" name="repeat">
+                    <option value="">None</option>
+                    <option value="daily">Daily</option>
+                    <option value="weekly">Weekly</option>
+                    <option value="monthly">Monthly</option>
+                  </select>
+                </label>
+                <div class="errors" data-input="repeat"></div>
+            </div>
+            <button class="form__button" type="submit">Send</button>
+            </form>
+        </section>
+    </div>
+  </body>
+</html>
