@@ -1,4 +1,4 @@
-const form = document.querySelector('#contactForm');
+const form = document.querySelector('#taskForm');
 
 const showError = (name, message) => {
   const box = document.querySelector(`.errors[data-input="${name}"]`);
@@ -16,33 +16,38 @@ form.addEventListener('submit', (e) => {
   const data = new FormData(form);
   let valid = true;
 
-  if (!data.get('name').trim()) {
-    showError('name', 'Name is required');
+  if (!data.get('topic') || !data.get('topic').trim()) {
+    showError('topic', 'Topic is required');
     valid = false;
   }
 
-  if (!data.get('email').trim()) {
-    showError('email', 'Email is required');
+  if (!data.get('description') || data.get('description').trim().length < 5) {
+    showError('description', 'Description must be at least 5 characters');
     valid = false;
   }
 
-  if (!data.get('age').trim()) {
-    showError('age', 'Age is required');
+  if (!data.get('date') || data.get('date') < new Date().toISOString().split('T')[0]) {
+    showError('date', 'Completion date is required and cannot be in the past');
     valid = false;
   }
 
-  if (!/^[0-9]{3}-[0-9]{3}-[0-9]{3}$/.test(data.get('phone'))) {
-    showError('phone', 'Phone must be xxx-xxx-xxx');
+  if (!data.get('priority')) {
+    showError('priority', 'Please select a priority');
     valid = false;
   }
 
-  if (data.get('message').trim().length < 10) {
-    showError('message', 'Message must have at least 10 characters');
+  if (!data.get('status')) {
+    showError('status', 'Please select a status');
+    valid = false;
+  }
+
+  if (!data.get('assignedTo') || !data.get('assignedTo').trim()) {
+    showError('assignedTo', 'Please enter the person responsible');
     valid = false;
   }
 
   if (!valid) return;
 
-  alert('Form sent successfully!');
+  alert('Task added successfully!');
   form.reset();
 });
