@@ -1,7 +1,6 @@
 const form = document.querySelector('#taskForm');
 const taskList = document.querySelector('#taskList');
 
-
 const showAlert = (msg) => alert(msg);
 const showConfirm = (msg) => confirm(msg);
 const showPrompt = (msg) => prompt(msg);
@@ -15,53 +14,87 @@ const clearErrors = () => {
   document.querySelectorAll('.errors').forEach(e => e.textContent = '');
 };
 
+const validators = {
+  topic: (value) => {
+    if (!value.trim()) return 'Topic is required';
+    return null;
+  },
+
+  description: (value) => {
+    if (value.trim().length < 5) {
+      return 'Description must be at least 5 characters';
+    }
+    return null;
+  },
+
+  date: (value) => {
+    const today = new Date().toISOString().split('T')[0];
+    if (!value) return 'Completion date is required';
+    if (value < today) return 'Date cannot be in the past';
+    return null;
+  },
+
+  priority: (value) => {
+    if (!value) return 'Please select a priority';
+    return null;
+  },
+
+  status: (value) => {
+    if (!value) return 'Please select a status';
+    return null;
+  },
+
+  assignedTo: (value) => {
+    if (!value.trim()) return 'Please enter the person responsible';
+    return null;
+  },
+
+  repeat: (value) => {
+    if (!value) return 'Please select a repeat';
+    return null;
+  }
+};
+
+const validateForm = (formData) => {
+  let isValid = true;
+
+  for (const field in validators) {
+    const value = formData.get(field) || '';
+    const error = validators[field](value);
+
+    if (error) {
+      showError(field, error);
+      isValid = false;
+    }
+  }
+
+  return isValid;
+};
+
+const buildConfirmMessage = (task) => {
+  return `
+Czy na pewno chcesz dodać to zadanie?
+
+Topic: ${task.topic}
+Description: ${task.description}
+Date: ${task.date}
+Priority: ${task.priority}
+Status: ${task.status}
+Assigned to: ${task.assignedTo}
+Repeat: ${task.repeat}
+${task.tag ? `Tag: ${task.tag}` : ''}
+`;
+};
+
 form.addEventListener('submit', (e) => {
   e.preventDefault();
   clearErrors();
 
   const data = new FormData(form);
-  let valid = true;
 
-  if (!data.get('topic') || !data.get('topic').trim()) {
-    showError('topic', 'Topic is required');
-    valid = false;
-  }
+  if (!validateForm(data)) return;
 
-  if (!data.get('description') || data.get('description').trim().length < 5) {
-    showError('description', 'Description must be at least 5 characters');
-    valid = false;
-  }
-
-  if (!data.get('date') || data.get('date') < new Date().toISOString().split('T')[0]) {
-    showError('date', 'Completion date is required and cannot be in the past');
-    valid = false;
-  }
-
-  if (!data.get('priority')) {
-    showError('priority', 'Please select a priority');
-    valid = false;
-  }
-
-  if (!data.get('status')) {
-    showError('status', 'Please select a status');
-    valid = false;
-  }
-
-  if (!data.get('assignedTo') || !data.get('assignedTo').trim()) {
-    showError('assignedTo', 'Please enter the person responsible');
-    valid = false;
-  }
-
-  if (!data.get('repeat')) {
-    showError('repeat', 'Please select a repeat');
-    valid = false;
-  }
-
-  if (!valid) return;
-
-  if (!showConfirm('Are you sure you want to add this task?')) return;
-
-    const tag = showPrompt('Add a tag for this task (optional):');
+  const tag = showPrompt('Add a tag for this task (optional):');
 
   const task = {
     topic: data.get('topic'),
@@ -74,12 +107,13 @@ form.addEventListener('submit', (e) => {
     tag: tag
   };
 
+  const confirmMessage = buildConfirmMessage(task);
+
+  if (!showConfirm(confirmMessage)) return;
+
   addTaskToList(task);
-
   showAlert('Task added successfully');
-
   form.reset();
-
 });
 
 const addTaskToList = (task) => {
@@ -88,9 +122,9 @@ const addTaskToList = (task) => {
 
   li.innerHTML = `
     <strong>Topic:</strong> ${task.topic}
-    <strong>Description:</strong>  ${task.description}
+    <strong>Description:</strong> ${task.description}
     <strong>Date:</strong> ${task.date}
-    <strong>Priority:</strong> ${task.priority} 
+    <strong>Priority:</strong> ${task.priority}
     <strong>Status:</strong> ${task.status}
     <strong>Assigned to:</strong> ${task.assignedTo}
     <strong>Repeat:</strong> ${task.repeat}
@@ -108,6 +142,3 @@ const addTaskToList = (task) => {
 
   taskList.appendChild(li);
 };
-
-
-
