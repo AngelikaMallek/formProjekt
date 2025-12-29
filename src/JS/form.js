@@ -59,6 +59,10 @@ const showErrors = (errors) => {
   }
 };
 
+const sortTodosByDate = () => {
+  todos.sort((a, b) => a.createdAt - b.createdAt);
+};
+
 const render = () => {
   taskList.innerHTML = '';
 
@@ -103,6 +107,7 @@ form.addEventListener('submit', (e) => {
     );
 
     todos.push(todo);
+    sortTodosByDate();
     render();
     form.reset();
 
