@@ -1,45 +1,6 @@
-class ValidationError extends Error {
-  constructor(errors) {
-    super('Validation error');
-    this.errors = errors;
-  }
-}
-
-class Todo {
-  constructor(topic, description = '') {
-    this.id = Date.now();
-    this.topic = topic;
-    this.description = description;
-    this.status = 'todo';
-    this.createdAt = new Date();
-
-    this.validate();
-  }
-
-  toggleStatus() {
-    this.status = this.status === 'todo' ? 'done' : 'todo';
-  }
-
-  validate() {
-    const errors = {};
-
-    if (!this.topic || !this.topic.trim()) {
-      errors.topic = 'Topic is required';
-    }
-
-    if (this.topic && this.topic.length > 50) {
-      errors.topic = 'Description must be max 50 characters';
-    }
-
-    if (this.description.length > 200) {
-      errors.description = 'Description must be max 200 characters';
-    }
-
-    if (Object.keys(errors).length > 0) {
-      throw new ValidationError(errors);
-    }
-  }
-}
+import { ValidationError, Todo } from "./todo";
+import { buildDialogContent, buildEditForm } from "./dialog";
+import { showErrorsIn, clearErrorsIn } from "./errors";
 
 const todos = [];
 let showOnlyTodo = false;
@@ -65,43 +26,8 @@ dialogCloseButton.addEventListener('click', () => {
   dialog.close();
 });
 
-const buildDialogContent = (todo) => {
-  return `
-    <p><strong>Id:</strong> ${todo.id}</p>
-    <p><strong>Topic:</strong> ${todo.topic}</p>
-    <p><strong>Description:</strong> ${todo.description || '-'}</p>
-    <p><strong>Status:</strong> ${todo.status}</p>
-    <p><strong>Created at:</strong> ${todo.createdAt.toLocaleString()}</p>
-  `;
-};
-
-const clearErrorsIn = (container) => {
-  container.querySelectorAll('.errors').forEach(e => e.textContent = '');
-};
-
-const showErrorsIn = (errors, container) => {
-  for (const field in errors) {
-    const box = container.querySelector(`.errors[data-input="${field}"]`);
-    if (box) {
-      box.textContent = errors[field];
-    }
-  }
-};
-
 const sortTodosByDate = () => {
   todos.sort((a, b) => a.createdAt - b.createdAt);
-};
-
-const buildEditForm = (todo) => {
-  return `
-    <form id="editForm">
-      <input type="text" name="topic" class="form__field" value="${todo.topic}">
-      <div class="errors" data-input="topic"></div>
-      <input type="text" name="description" class="form__field" value="${todo.description}">
-      <div class="errors" data-input="description"></div>
-      <button type="submit" class="formEdit__button">Send</button>
-    </form>
-  `;
 };
 
 const render = () => {
