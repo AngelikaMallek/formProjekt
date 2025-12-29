@@ -1,89 +1,93 @@
+class ValidationError extends Error {
+  constructor(errors) {
+    super('Validation error');
+    this.errors = errors;
+  }
+}
+
+class Todo {
+  constructor(topic, description = '') {
+    this.id = Date.now();
+    this.topic = topic;
+    this.description = description;
+    this.status = 'todo';
+    this.createdAt = new Date();
+
+    this.validate();
+  }
+
+  toggleStatus() {
+    this.status = this.status === 'todo' ? 'done' : 'todo';
+  }
+
+  validate() {
+    const errors = {};
+
+    if (!this.topic || !this.topic.trim()) {
+      errors.topic = 'Topic is required';
+    }
+
+    if (this.topic && this.topic.length > 50) {
+      errors.topic = 'Description must be max 50 characters';
+    }
+
+    if (this.description.length > 200) {
+      errors.description = 'Description must be max 200 characters';
+    }
+
+    if (Object.keys(errors).length > 0) {
+      throw new ValidationError(errors);
+    }
+  }
+}
+
+const todos = [];
+
 const form = document.querySelector('#taskForm');
 const taskList = document.querySelector('#taskList');
-
-const showAlert = (msg) => alert(msg);
-const showConfirm = (msg) => confirm(msg);
-const showPrompt = (msg) => prompt(msg);
-
-const showError = (name, message) => {
-  const box = document.querySelector(`.errors[data-input="${name}"]`);
-  box.textContent = message;
-};
 
 const clearErrors = () => {
   document.querySelectorAll('.errors').forEach(e => e.textContent = '');
 };
 
-const validators = {
-  topic: (value) => {
-    if (!value.trim()) return 'Topic is required';
-    return null;
-  },
-
-  description: (value) => {
-    if (value.trim().length < 5) {
-      return 'Description must be at least 5 characters';
+const showErrors = (errors) => {
+  for (const field in errors) {
+    const box = document.querySelector(`.errors[data-input="${field}"]`);
+    if (box) {
+      box.textContent = errors[field];
     }
-    return null;
-  },
-
-  date: (value) => {
-    const today = new Date().toISOString().split('T')[0];
-    if (!value) return 'Completion date is required';
-    if (value < today) return 'Date cannot be in the past';
-    return null;
-  },
-
-  priority: (value) => {
-    if (!value) return 'Please select a priority';
-    return null;
-  },
-
-  status: (value) => {
-    if (!value) return 'Please select a status';
-    return null;
-  },
-
-  assignedTo: (value) => {
-    if (!value.trim()) return 'Please enter the person responsible';
-    return null;
-  },
-
-  repeat: (value) => {
-    if (!value) return 'Please select a repeat';
-    return null;
   }
 };
 
-const validateForm = (formData) => {
-  let isValid = true;
+const render = () => {
+  taskList.innerHTML = '';
 
-  for (const field in validators) {
-    const value = formData.get(field) || '';
-    const error = validators[field](value);
+  todos.forEach(todo => {
+    const li = document.createElement('li');
+    li.classList.add('list__item');
 
-    if (error) {
-      showError(field, error);
-      isValid = false;
-    }
-  }
+    li.innerHTML = `
+      <strong>${todo.topic}</strong><br>
+      Date: ${todo.createdAt.toLocaleString()}<br>
+      Status: ${todo.status}<br>
 
-  return isValid;
-};
+      <button class="task__toggle">Change status</button>
+      <button class="task__delete">Delete</button>
+    `;
 
-const buildConfirmMessage = (task) => {
-  return `
-Czy na pewno chcesz dodać to zadanie?
+    li.querySelector('.task__toggle').addEventListener('click', () => {
+      todo.toggleStatus();
+      render();
+    });
 
-Topic: ${task.topic}
-Description: ${task.description}
-Date: ${task.date}
-Priority: ${task.priority}
-Status: ${task.status}
-Assigned to: ${task.assignedTo}
-Repeat: ${task.repeat}
-${task.tag ? `Tag: ${task.tag}` : ''}
-`;
+    li.querySelector('.task__delete').addEventListener('click', () => {
+      const index = todos.findIndex(t => t.id === todo.id);
+      todos.splice(index, 1);
+      render();
+    });
+
+    taskList.appendChild(li);
+  });
 };
 
 form.addEventListener('submit', (e) => {
@@ -92,53 +96,21 @@ form.addEventListener('submit', (e) => {
 
   const data = new FormData(form);
 
-  if (!validateForm(data)) return;
+  try {
+    const todo = new Todo(
+      data.get('topic'),
+      data.get('description')
+    );
 
-  const tag = showPrompt('Add a tag for this task (optional):');
+    todos.push(todo);
+    render();
+    form.reset();
 
-  const task = {
-    topic: data.get('topic'),
-    description: data.get('description'),
-    date: data.get('date'),
-    priority: data.get('priority'),
-    status: data.get('status'),
-    assignedTo: data.get('assignedTo'),
-    repeat: data.get('repeat'),
-    tag: tag
-  };
-
-  const confirmMessage = buildConfirmMessage(task);
-
-  if (!showConfirm(confirmMessage)) return;
-
-  addTaskToList(task);
-  showAlert('Task added successfully');
-  form.reset();
-});
-
-const addTaskToList = (task) => {
-  const li = document.createElement('li');
-  li.classList.add('list__item');
-
-  li.innerHTML = `
-    <strong>Topic:</strong> ${task.topic}
-    <strong>Description:</strong> ${task.description}
-    <strong>Date:</strong> ${task.date}
-    <strong>Priority:</strong> ${task.priority}
-    <strong>Status:</strong> ${task.status}
-    <strong>Assigned to:</strong> ${task.assignedTo}
-    <strong>Repeat:</strong> ${task.repeat}
-    ${task.tag ? `<strong>Tag:</strong> ${task.tag}<br>` : '<br>'}
-    <button class="task__delete">Usuń</button>
-  `;
-
-  const deleteButton = li.querySelector('.task__delete');
-
-  deleteButton.addEventListener('click', () => {
-    if (confirm('Czy na pewno chcesz usunąć to zadanie?')) {
-      li.remove();
+  } catch (error) {
+    if (error instanceof ValidationError) {
+      showErrors(error.errors);
+    } else {
+      console.error(error);
     }
-  });
-
-  taskList.appendChild(li);
-};
+  }
+});
