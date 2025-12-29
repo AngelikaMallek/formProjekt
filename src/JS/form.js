@@ -57,6 +57,7 @@ dialogCloseButton.addEventListener('click', () => {
 
 const buildDialogContent = (todo) => {
   return `
+    <p><strong>Id:</strong> ${todo.id}</p>
     <p><strong>Topic:</strong> ${todo.topic}</p>
     <p><strong>Description:</strong> ${todo.description || '-'}</p>
     <p><strong>Status:</strong> ${todo.status}</p>
@@ -87,6 +88,7 @@ const render = () => {
   todos.forEach(todo => {
     const li = document.createElement('li');
     li.classList.add('list__item');
+    li.classList.add(`task--${todo.status}`);
 
     li.innerHTML = `
       <strong>${todo.topic}</strong><br>
