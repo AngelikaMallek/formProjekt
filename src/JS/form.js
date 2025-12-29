@@ -45,6 +45,24 @@ const todos = [];
 
 const form = document.querySelector('#taskForm');
 const taskList = document.querySelector('#taskList');
+const dialog = document.querySelector('#task-dialog');
+const dialogContent = document.querySelector('#dialog__content');
+const dialogCloseButton = document.querySelector('#dialog__button');
+
+
+
+dialogCloseButton.addEventListener('click', () => {
+  dialog.close();
+});
+
+const buildDialogContent = (todo) => {
+  return `
+    <p><strong>Topic:</strong> ${todo.topic}</p>
+    <p><strong>Description:</strong> ${todo.description || '-'}</p>
+    <p><strong>Status:</strong> ${todo.status}</p>
+    <p><strong>Created at:</strong> ${todo.createdAt.toLocaleString()}</p>
+  `;
+};
 
 const clearErrors = () => {
   document.querySelectorAll('.errors').forEach(e => e.textContent = '');
@@ -75,6 +93,7 @@ const render = () => {
       Date: ${todo.createdAt.toLocaleString()}<br>
       Status: ${todo.status}<br>
 
+      <button class="task__details">Show Details</button>
       <button class="task__toggle">Change status</button>
       <button class="task__delete">Delete</button>
     `;
@@ -88,6 +107,11 @@ const render = () => {
       const index = todos.findIndex(t => t.id === todo.id);
       todos.splice(index, 1);
       render();
+    });
+
+    li.querySelector('.task__details').addEventListener('click', () => {
+      dialogContent.innerHTML = buildDialogContent(todo);
+      dialog.showModal();
     });
 
     taskList.appendChild(li);

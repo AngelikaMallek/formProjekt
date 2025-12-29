@@ -31,5 +31,16 @@
     font-size: 0.85rem;
 }
 
+.task__details {
+    margin-top: 10px;
+    padding: 6px 10px;
+    border: none;
+    background: rgba(0, 128, 128, 0.644);
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+
 
 
