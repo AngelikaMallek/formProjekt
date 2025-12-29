@@ -14,3 +14,11 @@
 .section__element {
     font-size: 15px;
 }
+
+.section__button {
+    border: none;
+    background-color: white;
+    color: teal;
+    font-weight: 600;
+    cursor: pointer;
+}

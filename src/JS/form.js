@@ -42,14 +42,24 @@ class Todo {
 }
 
 const todos = [];
+let showOnlyTodo = false;
 
 const form = document.querySelector('#taskForm');
 const taskList = document.querySelector('#taskList');
 const dialog = document.querySelector('#task-dialog');
 const dialogContent = document.querySelector('#dialog__content');
 const dialogCloseButton = document.querySelector('#dialog__button');
+const filterTodoButton = document.querySelector('.section__button');
 
+filterTodoButton.addEventListener('click', () => {
+  showOnlyTodo = !showOnlyTodo;
 
+  filterTodoButton.textContent = showOnlyTodo
+    ? 'Show all tasks'
+    : 'Show only TO-DO tasks';
+
+  render();
+});
 
 dialogCloseButton.addEventListener('click', () => {
   dialog.close();
@@ -96,8 +106,12 @@ const buildEditForm = (todo) => {
 
 const render = () => {
   taskList.innerHTML = '';
+    const visibleTodos = showOnlyTodo
+    ? todos.filter(todo => todo.status === 'todo')
+    : todos;
 
-  todos.forEach(todo => {
+    visibleTodos.forEach(todo => {
+
     const li = document.createElement('li');
     li.classList.add('list__item');
     li.classList.add(`task--${todo.status}`);
