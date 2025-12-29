@@ -30,55 +30,9 @@
               <div>
                 <label class="form__element">
                   Description:
-                  <input class="form__field" type="message" placeholder="Description" name="description">
+                  <input class="form__field" type="text" placeholder="Description" name="description">
                 </label>
                 <div class="errors" data-input="description"></div>
-              </div>
-              <div>
-                <label class="form__element">
-                  Completion date:
-                  <input class="form__field" type="date" placeholder="Completion date" name="date">
-                </label>
-                <div class="errors" data-input="date"></div>
-              </div>
-              <div>
-                <label class="form__element">
-                  Priority
-                  <select class="form__field" name="priority">
-                      <option value="" disabled selected></option>
-                      <option value="High">High</option>
-                      <option value="Medium">Medium</option>
-                      <option value="Low">Low</option>
-                      <option value="Optional">Optional</option>
-                  </select>
-                </label>
-                <div class="errors" data-input="priority"></div>
-              </div>
-              <div>
-                <label class="form__element">Status:</label>
-                <label><input type="radio" name="status" value="Not started"> Not started</label>
-                <label><input type="radio" name="status" value="In progress"> In progress</label>
-                <label><input type="radio" name="status" value="Done"> Done</label>
-                <div class="errors" data-input="status"></div>
-              </div>
-              <div>
-                <label class="form__element">
-                  Assigned to:
-                  <input class="form__field" type="text" name="assignedTo" placeholder="Person responsible">
-                </label>
-                <div class="errors" data-input="assignedTo"></div>
-              </div>
-              <div>
-                <label class="form__element">
-                  Repeat:
-                  <select class="form__field" name="repeat">
-                    <option value="">None</option>
-                    <option value="daily">Daily</option>
-                    <option value="weekly">Weekly</option>
-                    <option value="monthly">Monthly</option>
-                  </select>
-                </label>
-                <div class="errors" data-input="repeat"></div>
               </div>
               <button class="form__button" type="submit">Send</button>
             </form>
