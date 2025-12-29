@@ -65,13 +65,13 @@ const buildDialogContent = (todo) => {
   `;
 };
 
-const clearErrors = () => {
-  document.querySelectorAll('.errors').forEach(e => e.textContent = '');
+const clearErrorsIn = (container) => {
+  container.querySelectorAll('.errors').forEach(e => e.textContent = '');
 };
 
-const showErrors = (errors) => {
+const showErrorsIn = (errors, container) => {
   for (const field in errors) {
-    const box = document.querySelector(`.errors[data-input="${field}"]`);
+    const box = container.querySelector(`.errors[data-input="${field}"]`);
     if (box) {
       box.textContent = errors[field];
     }
@@ -80,6 +80,18 @@ const showErrors = (errors) => {
 
 const sortTodosByDate = () => {
   todos.sort((a, b) => a.createdAt - b.createdAt);
+};
+
+const buildEditForm = (todo) => {
+  return `
+    <form id="editForm">
+      <input type="text" name="topic" class="form__field" value="${todo.topic}">
+      <div class="errors" data-input="topic"></div>
+      <input type="text" name="description" class="form__field" value="${todo.description}">
+      <div class="errors" data-input="description"></div>
+      <button type="submit" class="formEdit__button">Send</button>
+    </form>
+  `;
 };
 
 const render = () => {
@@ -98,6 +110,7 @@ const render = () => {
       <button class="task__details">Show Details</button>
       <button class="task__toggle">Change status</button>
       <button class="task__delete">Delete</button>
+      <button class="task__edit">Edit task</button>
     `;
 
     li.querySelector('.task__toggle').addEventListener('click', () => {
@@ -116,13 +129,42 @@ const render = () => {
       dialog.showModal();
     });
 
+    li.querySelector('.task__edit').addEventListener('click', () => {
+      dialogContent.innerHTML = buildEditForm(todo);
+      dialog.showModal();
+
+      const editForm = document.querySelector('#editForm');
+
+      editForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const data = new FormData(editForm);
+
+        try {
+          todo.topic = data.get('topic');
+          todo.description = data.get('description');
+
+          todo.validate();
+          dialog.close();
+          render();
+
+        } catch (error) {
+          if (error instanceof ValidationError) {
+            showErrorsIn(error.errors, editForm);
+          } else {
+            console.error(error);
+          }
+        }
+      });
+    });
+
     taskList.appendChild(li);
   });
 };
 
 form.addEventListener('submit', (e) => {
   e.preventDefault();
-  clearErrors();
+  clearErrorsIn(form);
 
   const data = new FormData(form);
 
@@ -139,7 +181,7 @@ form.addEventListener('submit', (e) => {
 
   } catch (error) {
     if (error instanceof ValidationError) {
-      showErrors(error.errors);
+      showErrorsIn(error.errors, form);
     } else {
       console.error(error);
     }

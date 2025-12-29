@@ -58,3 +58,19 @@
     cursor: pointer;
     font-size: 0.85rem;
 }
+
+#editForm {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.formEdit__button {
+    padding: 12px;
+    background-color: teal;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
