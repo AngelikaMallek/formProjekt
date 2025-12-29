@@ -42,5 +42,15 @@
     font-size: 0.85rem;
 }
 
+.task--todo {
+  background-color: #fff3cd;
+  border-left: 5px solid #ffc107;
+}
+
+.task--done {
+  background-color: #d4edda;
+  border-left: 5px solid #28a745;
+}
+
 
 
